@@ -1,8 +1,6 @@
-import random
-
 """
 'Powerball Story' program.
-Capture the name of the employees entering the number.
+Capture the name of the employees entering the numbers.
 The first 5 favorite numbers will need to be in the range of 1 to 69 and unique.
 6th favorite number will need to be in the range of 1 to 26 and flagged as the 6th Power ball number.
 Keep count of each individual favorite number provided to determine which numbers to use in our final winning number.
@@ -12,6 +10,10 @@ Display all employees with their corresponding number entries.
 Display the final Power ball number based on the requirements above
 
 """
+import random
+
+__author__ = "Igor Dean"
+__email__ = "igoredean@gmail.com"
 
 class Employee():
 
@@ -144,6 +146,30 @@ def get_duplicates(employees):
     return dups_count
 
 
+def calc_and_display_result(employees):
+    """Calculate the power ball and print results.
+    :param employees: List of employees
+    :return: None
+    """
+
+    # get count of duplicates
+    dups_count = get_duplicates(employees=employees)
+
+    # filter out numbers with max count
+    contenders = {k: v for k, v in dups_count.items() if v == max(dups_count.values())}
+
+    # in case of tie randomly pick one power ball number
+    the_winner = random.sample(list(contenders.keys()), 1)[0]
+
+    # randomly select 5 numbers from range 1 to 59
+    random_5 = random.sample(range(1, 60), 5)
+
+    print()
+    print(*employees, sep='\n')
+    print("\nPowerball winning number:")
+    print("\n{} Powerball: {}\n".format(' '.join(str(n) for n in random_5), the_winner))
+
+
 def main():
 
     employees = []  # list of employees with selected lottery numbers
@@ -152,21 +178,27 @@ def main():
         first_name, second_name = get_name()
         numbers, power_ball = get_numbers()
         employees.append(Employee(first=first_name, second=second_name, numbers=numbers, powerball=power_ball))
-        if 'y' != input("Get numbers from next employee? [yes/no] : ")[0]:
+        if 'y' != input("\nInput next employee? [yes/no] : ")[0]:
             break
 
-    print(*employees, sep='\n')
-
-    dups_count = get_duplicates(employees=employees)
-
-    contenders = {k: v for k, v in dups_count.items() if v == max(dups_count.values())}
-    the_winner = random.sample(list(contenders.keys()), 1)[0]
-    random_5 = random.sample(range(1, 60), 5)
-
-    print(dups_count)
-    print("Powerball winning number:")
-    print("{} Powerball: {}".format(random_5, the_winner))
+    calc_and_display_result(employees)
 
 
+def test():
+    employees = [
+        Employee('Wade', 'Wilson', [15,26,33,60,34], 16),
+        Employee('Frank', 'Castle', [15,26,34,56,51], 16),
+        Employee('Joe', 'Dow', [19, 26, 33, 56, 11], 7),
+        Employee('Jim', 'Frizzer', [12, 36, 10, 59, 61], 7),
+        Employee('Igor', 'Dean', [12, 3, 4, 45, 46], 9)
+    ]
+    calc_and_display_result(employees)
+
+
+import sys
 if __name__ == "__main__":
-    main()
+
+    if len(sys.argv) > 1 and sys.argv[1] == 'test':
+        test()
+    else:
+        main()
