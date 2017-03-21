@@ -10,7 +10,7 @@ Test output:
 * Joe Dow 19 26 33 56 11 Powerball: 7
 * Jim Frizzer 12 36 10 59 61 Powerball: 7
 * Igor Dean 12 3 4 45 46 Powerball: 9
-*
+
 * Powerball winning number:
-*
+
 * 47 8 49 23 19 Powerball: 7
